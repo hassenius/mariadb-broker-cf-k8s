@@ -11,7 +11,6 @@ image:
 service:
   type: NodePort
   port: 8080
-  nodePort: 31333
 
 ingress:
   enabled: false
@@ -51,7 +50,6 @@ affinity: {}
 mariadb:
   service:
     type: NodePort
-    nodePort: 31338
     nodeIP: PROXY_NODE_IP_GOES_HERE
     #host:
   rootUser:
