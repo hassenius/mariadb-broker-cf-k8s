@@ -39,6 +39,9 @@ spec:
               port: http
               initialDelaySeconds: 15
               periodSeconds: 20
+          volumeMounts:
+          - name: settings-yml
+            mountPath: /broker/resources
           env:
           - name: BROKER_USERNAME
             valueFrom:
@@ -53,7 +56,7 @@ spec:
           - name: MYSQL_HOST_PUBLIC
             value: "{{ .Values.mariadb.service.nodeIP }}"
           - name: MYSQL_HOST
-            value: {{ template "mariadb.host" . }}
+            value: {{ .Values.mariadb.service.host }}
           - name: MYSQL_PORT_PUBLIC
             value: "{{ .Values.mariadb.service.nodePort }}"
           - name: MYSQL_PORT
@@ -63,7 +66,7 @@ spec:
           - name: MYSQL_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Release.Name }}-mariadb
+                name: {{ .Values.mariadb.rootUser.passwordSecret }}
                 key: mariadb-root-password
           resources:
 {{ toYaml .Values.resources | indent 12 }}
@@ -79,3 +82,7 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+      volumes:
+      - name: settings-yml
+        configMap:
+          name: {{ .Release.Name }}-settings

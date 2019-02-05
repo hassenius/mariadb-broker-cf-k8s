@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-settings
+data:
+  settings.yml: |-
+    services:
+    - name: {{ .Release.Name | replace "-broker" "" }}
+      id: {{ uuidv4 }}
+      description: MariaDB service for application development and testing
+      bindable: true
+      tags:
+        - mysql
+        - relational
+      max_db_per_node: 250
+      metadata:
+        displayName: MariaDB
+        imageUrl: https://raw.githubusercontent.com/docker-library/docs/74e3b3d4d60389208732dbd2c95145868111d959/mariadb/logo.png
+        longDescription: Provisioning a service instance creates a MariaDB database. Binding applications to the instance creates unique credentials for each application to access the database
+        providerDisplayName: MariaDB Community Edition
+        documentationUrl: https://mariadb.com/kb/en/library/documentation/
+        supportUrl: https://mariadb.com/kb/en/library/community/
+      plans:
+      - name: 15mb
+        id: {{ uuidv4 }}
+        description: Shared MariaDB Server, 15mb persistent disk, 40 max concurrent connections
+        max_storage_mb: 15 # in MB
+        metadata:
+          cost: 0.0
+          bullets:
+          - content: Shared MariaDB server
+          - content: 15 MB storage
+          - content: 40 concurrent connections
