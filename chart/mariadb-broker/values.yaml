@@ -51,11 +51,12 @@ mariadb:
   service:
     type: NodePort
     nodeIP: PROXY_NODE_IP_GOES_HERE
-    #host:
+    host:
   rootUser:
     user: root
-    password: test
+    passwordSecret: mariadb
     forcePassword: true
+
   db:
     user: test
     password: test
